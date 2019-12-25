@@ -1,6 +1,6 @@
 # expensebook
 
-A tool to keep track of personal finances.
+A tool to keep track of your expenses.
 
 ## Getting Started
 
