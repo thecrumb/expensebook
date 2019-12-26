@@ -52,7 +52,7 @@ class ExpenseList extends StatelessWidget {
                     ),
                     padding: EdgeInsets.all(10.0),
                     child: Text(
-                      '\$' + expenses[index].amount.toString(),
+                      '\$${expenses[index].amount.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15.0,
