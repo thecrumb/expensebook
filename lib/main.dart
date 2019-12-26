@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './models/expense.dart';
+import './widgets/chart.dart';
 import './widgets/expense_list.dart';
 import './widgets/new_expense.dart';
 
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'expensebook',
+      theme: ThemeData(
+        fontFamily: 'Quicksand',
+      ),
       home: MyHomePage(),
     );
   }
@@ -25,17 +29,17 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Expense> _userExpenses = [
     Expense(
       id: '1',
-      title: 'Hotpot',
-      amount: 16.99,
+      title: 'Test',
+      amount: 19.99,
       date: DateTime.now(),
-    ),
-    Expense(
-      id: '2',
-      title: 'Eggs',
-      amount: 7.99,
-      date: DateTime.now(),
-    ),
+    )
   ];
+
+  List<Expense> get _recentExpenses {
+    return _userExpenses.where((expense) {
+      return expense.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   void _addExpense(String titleInput, double amountInput) {
     final currentExpense = Expense(
@@ -51,16 +55,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _openNewExpense(BuildContext ctx) {
-    showModalBottomSheet(context: ctx, builder: (_) {
-      return NewExpense(_addExpense);
-    });
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return NewExpense(_addExpense);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome'),
+        title: Text(
+          'Welcome',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -70,10 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Card(
-              child: Text('Chart'),
-            ),
+            Chart(_recentExpenses),
             ExpenseList(_userExpenses),
           ],
         ),

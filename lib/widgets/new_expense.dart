@@ -11,7 +11,6 @@ class NewExpense extends StatefulWidget {
 
 class _NewExpenseState extends State<NewExpense> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
 
   void submitInput() {
