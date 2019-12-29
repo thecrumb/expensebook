@@ -26,14 +26,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Expense> _userExpenses = [
-    Expense(
-      id: '1',
-      title: 'Test',
-      amount: 19.99,
-      date: DateTime.now(),
-    )
-  ];
+  final List<Expense> _userExpenses = [];
 
   List<Expense> get _recentExpenses {
     return _userExpenses.where((expense) {
@@ -41,12 +34,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addExpense(String titleInput, double amountInput) {
+  void _addExpense(String titleInput, double amountInput, DateTime dateInput) {
     final currentExpense = Expense(
       id: DateTime.now().toString(),
       title: titleInput,
       amount: amountInput,
-      date: DateTime.now(),
+      date: dateInput,
     );
 
     setState(() {
@@ -56,10 +49,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _openNewExpense(BuildContext ctx) {
     showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return NewExpense(_addExpense);
-        });
+      context: ctx,
+      builder: (_) {
+        return NewExpense(_addExpense);
+      },
+    );
+  }
+
+  void _deleteExpense(String expenseID) {
+    setState(() {
+      _userExpenses.removeWhere((expense) => expense.id == expenseID);
+    });
   }
 
   @override
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Welcome',
+          'expensebook',
           style: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentExpenses),
-            ExpenseList(_userExpenses),
+            ExpenseList(_userExpenses, _deleteExpense),
           ],
         ),
       ),
