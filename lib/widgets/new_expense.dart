@@ -51,61 +51,69 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Title'),
-              controller: _titleController,
-              onSubmitted: (_) => _submitInput(),
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitInput(),
-            ),
-            Container(
-              height: 70.0,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(_selectedDate == null
-                        ? 'Please choose a date!'
-                        : 'Date: ${DateFormat('yMd').format(_selectedDate)}'),
-                  ),
-                  FlatButton(
-                    child: Text(
-                      'Choose date',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5.0,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10.0,
+            left: 10.0,
+            right: 10.0,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10.0,
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: _titleController,
+                onSubmitted: (_) => _submitInput(),
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submitInput(),
+              ),
+              Container(
+                height: 70.0,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(_selectedDate == null
+                          ? 'Please choose a date!'
+                          : 'Date: ${DateFormat('yMd').format(_selectedDate)}'),
                     ),
-                    textColor: Colors.blue,
-                    onPressed: _presentDatePicker,
+                    FlatButton(
+                      child: Text(
+                        'Choose date',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      textColor: Colors.blue,
+                      onPressed: _presentDatePicker,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Cancel'),
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  SizedBox(width: 10.0),
+                  RaisedButton(
+                    child: Text('Add Expense'),
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    onPressed: _submitInput,
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                RaisedButton(
-                  child: Text('Cancel'),
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                SizedBox(width: 10.0),
-                RaisedButton(
-                  child: Text('Add Expense'),
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  onPressed: _submitInput,
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

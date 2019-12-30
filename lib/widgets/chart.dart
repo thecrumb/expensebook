@@ -6,8 +6,9 @@ import '../models/expense.dart';
 
 class Chart extends StatelessWidget {
   final List<Expense> recentExpenses;
+  final bool isPortrait;
 
-  Chart(this.recentExpenses);
+  Chart(this.recentExpenses, this.isPortrait);
 
   List<Map<String, Object>> get expensesPerDay {
     return List.generate(7, (index) {
@@ -37,24 +38,32 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chartContent = expensesPerDay.map((data) {
+      return Flexible(
+        fit: FlexFit.tight,
+        child: ChartBar(
+          data['day'],
+          data['amount'],
+          weekExpense == 0.0 ? 0.0 : (data['amount'] as double) / weekExpense,
+          isPortrait,
+        ),
+      );
+    }).toList();
+
     return Card(
       elevation: 6.0,
       margin: EdgeInsets.all(20.0),
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: expensesPerDay.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                data['day'],
-                data['amount'],
-                weekExpense == 0.0 ? 0.0 : (data['amount'] as double) / weekExpense,
+        child: isPortrait
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: chartContent,
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: chartContent,
               ),
-            );
-          }).toList(),
-        ),
       ),
     );
   }

@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _openNewExpense(BuildContext ctx) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: ctx,
       builder: (_) {
         return NewExpense(_addExpense);
@@ -64,36 +65,66 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'expensebook',
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
+    final mediaQuery = MediaQuery.of(context);
+    final isPortrait = mediaQuery.orientation == Orientation.portrait;
+    final appBar = AppBar(
+      title: Text(
+        'expensebook',
+        style: TextStyle(
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openNewExpense(context),
-          )
-        ],
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openNewExpense(context),
+        )
+      ],
+    );
+    final availableHeight = mediaQuery.size.height -
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Chart(_recentExpenses),
-            ExpenseList(_userExpenses, _deleteExpense),
-          ],
-        ),
+        child: isPortrait
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    height: availableHeight * 0.3,
+                    child: Chart(_recentExpenses, isPortrait),
+                  ),
+                  Container(
+                    height: availableHeight * 0.7,
+                    child: ExpenseList(_userExpenses, _deleteExpense),
+                  ),
+                ],
+              )
+            : Row(
+                children: <Widget>[
+                  Container(
+                    height: availableHeight,
+                    width: mediaQuery.size.width * 0.4,
+                    child: Chart(_recentExpenses, isPortrait),
+                  ),
+                  Container(
+                    height: availableHeight,
+                    width: mediaQuery.size.width * 0.6,
+                    child: ExpenseList(_userExpenses, _deleteExpense),
+                  ),
+                ],
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _openNewExpense(context),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: isPortrait
+          ? FloatingActionButtonLocation.centerFloat
+          : FloatingActionButtonLocation.endFloat,
     );
   }
 }

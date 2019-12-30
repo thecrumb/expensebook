@@ -15,6 +15,9 @@ class ExpenseList extends StatelessWidget {
       builder: (bCtx) {
         return AlertDialog(
           title: Text('Delete?'),
+//          content: Text(
+//            '${expenses.where((expense) => expense.id == id).toList()[0].title}\n\$${expenses.where((expense) => expense.id == id).toList()[0].amount}',
+//          ),
           actions: <Widget>[
             FlatButton(
               child: Text(
@@ -43,10 +46,9 @@ class ExpenseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 470.0,
-      child: expenses.isEmpty
-          ? Column(
+    return expenses.isEmpty
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
               children: <Widget>[
                 Text(
                   'You have no expenses!',
@@ -54,54 +56,55 @@ class ExpenseList extends StatelessWidget {
                 ),
                 SizedBox(height: 20.0),
                 Container(
-                  height: 200.0,
+                  height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/images/waiting.png',
                     fit: BoxFit.cover,
                   ),
                 ),
               ],
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(
-                      expenses[index].title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    subtitle: Text(
-                      DateFormat('yMMMd').format(expenses[index].date),
-                    ),
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.green,
-                          width: 2.0,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        '\$${expenses[index].amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
-                        ),
-                      ),
-                    ),
-                    onLongPress: () => _confirmDelete(
-                      context,
-                      expenses[index].id,
+            );
+          })
+        : ListView.builder(
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 3.0,
+                child: ListTile(
+                  title: Text(
+                    expenses[index].title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
                     ),
                   ),
-                );
-              },
-              itemCount: expenses.length,
-              physics: BouncingScrollPhysics(),
-            ),
-    );
+                  subtitle: Text(
+                    DateFormat('yMMMd').format(expenses[index].date),
+                  ),
+                  trailing: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.green,
+                        width: 2.0,
+                      ),
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      '\$${expenses[index].amount.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ),
+                  onLongPress: () => _confirmDelete(
+                    context,
+                    expenses[index].id,
+                  ),
+                ),
+              );
+            },
+            itemCount: expenses.length,
+            physics: BouncingScrollPhysics(),
+          );
   }
 }
