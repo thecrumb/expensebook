@@ -6,7 +6,7 @@ class ChartBar extends StatelessWidget {
   final double percentage;
   final bool isPortrait;
 
-  ChartBar(this.day, this.amount, this.percentage, this.isPortrait);
+  const ChartBar(this.day, this.amount, this.percentage, this.isPortrait);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ChartBar extends StatelessWidget {
           ? Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 1.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 1.5),
                   height: constraints.maxHeight * 0.15,
                   child:
                       FittedBox(child: Text('\$${amount.toStringAsFixed(2)}')),

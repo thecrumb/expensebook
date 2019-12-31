@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../models/expense.dart';
+import './expense_item.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> expenses;
   final Function removeExpense;
 
-  ExpenseList(this.expenses, this.removeExpense);
+  const ExpenseList(this.expenses, this.removeExpense);
 
   void _confirmDelete(BuildContext ctx, String id) {
     showDialog(
       context: ctx,
       builder: (bCtx) {
         return AlertDialog(
-          title: Text('Delete?'),
-//          content: Text(
-//            '${expenses.where((expense) => expense.id == id).toList()[0].title}\n\$${expenses.where((expense) => expense.id == id).toList()[0].amount}',
-//          ),
+          title: const Text('Delete?'),
           actions: <Widget>[
             FlatButton(
-              child: Text(
+              child: const Text(
                 'Cancel',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               textColor: Colors.red,
               onPressed: () => Navigator.of(bCtx).pop(),
             ),
             FlatButton(
-              child: Text(
+              child: const Text(
                 'Confirm',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               textColor: Colors.blue,
               onPressed: () {
@@ -50,11 +47,11 @@ class ExpenseList extends StatelessWidget {
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Column(
               children: <Widget>[
-                Text(
+                const Text(
                   'You have no expenses!',
-                  style: TextStyle(fontSize: 20.0),
+                  style: const TextStyle(fontSize: 20.0),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Container(
                   height: constraints.maxHeight * 0.6,
                   child: Image.asset(
@@ -67,44 +64,10 @@ class ExpenseList extends StatelessWidget {
           })
         : ListView.builder(
             itemBuilder: (context, index) {
-              return Card(
-                elevation: 3.0,
-                child: ListTile(
-                  title: Text(
-                    expenses[index].title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  subtitle: Text(
-                    DateFormat('yMMMd').format(expenses[index].date),
-                  ),
-                  trailing: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.green,
-                        width: 2.0,
-                      ),
-                    ),
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      '\$${expenses[index].amount.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ),
-                  onLongPress: () => _confirmDelete(
-                    context,
-                    expenses[index].id,
-                  ),
-                ),
-              );
+              return ExpenseItem(expenses[index], _confirmDelete);
             },
             itemCount: expenses.length,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
           );
   }
 }

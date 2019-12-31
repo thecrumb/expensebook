@@ -79,14 +79,16 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: Text(_selectedDate == null
-                          ? 'Please choose a date!'
-                          : 'Date: ${DateFormat('yMd').format(_selectedDate)}'),
+                      child: Text(
+                        _selectedDate == null
+                            ? 'Please choose a date!'
+                            : 'Date: ${DateFormat('yMd').format(_selectedDate)}',
+                      ),
                     ),
                     FlatButton(
-                      child: Text(
+                      child: const Text(
                         'Choose date',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       textColor: Colors.blue,
                       onPressed: _presentDatePicker,
@@ -98,14 +100,14 @@ class _NewExpenseState extends State<NewExpense> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   RaisedButton(
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                     color: Colors.red,
                     textColor: Colors.white,
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   RaisedButton(
-                    child: Text('Add Expense'),
+                    child: const Text('Add Expense'),
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: _submitInput,

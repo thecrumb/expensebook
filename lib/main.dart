@@ -68,16 +68,16 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
     final isPortrait = mediaQuery.orientation == Orientation.portrait;
     final appBar = AppBar(
-      title: Text(
+      title: const Text(
         'expensebook',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 24.0,
           fontWeight: FontWeight.bold,
         ),
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () => _openNewExpense(context),
         )
       ],
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => _openNewExpense(context),
       ),
       floatingActionButtonLocation: isPortrait

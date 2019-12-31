@@ -8,7 +8,7 @@ class Chart extends StatelessWidget {
   final List<Expense> recentExpenses;
   final bool isPortrait;
 
-  Chart(this.recentExpenses, this.isPortrait);
+  const Chart(this.recentExpenses, this.isPortrait);
 
   List<Map<String, Object>> get expensesPerDay {
     return List.generate(7, (index) {
@@ -52,9 +52,9 @@ class Chart extends StatelessWidget {
 
     return Card(
       elevation: 6.0,
-      margin: EdgeInsets.all(20.0),
+      margin: const EdgeInsets.all(20.0),
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: isPortrait
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
